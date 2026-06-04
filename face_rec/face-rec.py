@@ -4,4 +4,6 @@ webcam = cv2.VideoCapture(0)
 while True:
     _,img=webcam.read()
     cv2.imshow("Face Detection",img)
-
+    key = cv2.waitKey(10)
+    if key == 27:
+        break 
