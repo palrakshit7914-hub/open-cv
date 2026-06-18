@@ -28,7 +28,7 @@ while True:
     
     if all_faces:
         landmarks_points = all_faces[0]
-        for landmark in landmarks_points[474:478]:
+        for i, landmark in enumerate(landmarks_points[474:478]):
             y = int(landmark.y * img.shape[0])
             x = int(landmark.x * img.shape[1])
             cv2.circle(img, (x, y), 3, (0, 255, 0), cv2.FILLED)
@@ -44,10 +44,6 @@ while True:
                 pyautogui.click()
                 pyautogui.sleep(2)
                 print("Mouse Clicked")
-
-
-    
-        
         cv2.imshow("Eye Control Mouse", img)
     key = cv2.waitKey(100)
     if key == 27:
