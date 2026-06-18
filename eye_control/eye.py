@@ -4,8 +4,11 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 import pyautogui
 import os
+import screeninfo
 
 
+screen = screeninfo.get_monitors()[0]
+screen_w, screen_h = screen.width, screen.height
 
 model_path = os.path.join(os.path.dirname(__file__), "models/face_landmarker.task")
 base_options = python.BaseOptions(model_asset_path=model_path)
@@ -32,7 +35,7 @@ while True:
             y = int(landmark.y * img.shape[0])
             x = int(landmark.x * img.shape[1])
             cv2.circle(img, (x, y), 3, (0, 255, 0), cv2.FILLED)
-            pyautogui.moveTo(x * 2, y * 2)
+            pyautogui.moveTo(x*2, y*2)
 
         left_eye = [landmarks_points[145], landmarks_points[159]]
         for landmark in left_eye:
