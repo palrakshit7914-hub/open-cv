@@ -49,7 +49,10 @@ while True:
             iris_center = landmarks_points[473]
             
             min_x, max_x = 0.43, 0.47
-            min_y, max_y = 0.43, 0.47
+            min_y, max_y = 0.43, 0.
+            
+            normalized_x = (iris_center.x - min_x) / (max_x - min_x)
+            normalized_y = (iris_center.y - min_y) / (max_y - min_y)
 
             if left_eye[0].y - left_eye[1].y < 0.01:
                 pyautogui.click()
