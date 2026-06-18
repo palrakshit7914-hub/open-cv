@@ -39,6 +39,13 @@ while True:
             y = int(landmark.y * img.shape[0])
             x = int(landmark.x * img.shape[1])
             cv2.circle(img, (x, y), 3, (0, 255, 255), cv2.FILLED)
+            
+            if left_eye[0].y - left_eye[1].y < 0.01:
+                pyautogui.click()
+                pyautogui.sleep(2)
+                print("Mouse Clicked")
+
+
     
         
         cv2.imshow("Eye Control Mouse", img)
