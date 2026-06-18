@@ -6,6 +6,8 @@ import pyautogui
 import os
 import screeninfo
 
+pyautogui.FAILSAFE = False
+pyautogui.PAUSE = 0
 
 screen = screeninfo.get_monitors()[0]
 screen_w, screen_h = screen.width, screen.height
