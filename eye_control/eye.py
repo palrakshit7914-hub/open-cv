@@ -47,7 +47,9 @@ while True:
             cv2.circle(img, (x, y), 3, (0, 255, 255), cv2.FILLED)
             
             iris_center = landmarks_points[473]
-
+            
+            min_x, max_x = 0.43, 0.47
+            min_y, max_y = 0.43, 0.47
 
             if left_eye[0].y - left_eye[1].y < 0.01:
                 pyautogui.click()
