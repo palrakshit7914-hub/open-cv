@@ -22,8 +22,18 @@ cam = cv2.VideoCapture(0)
 while True:
     _,img = cam.read()
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    results = face_mesh.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=imgRGB))
-    cv2.imshow("Eye Control Mouse", img)
+    processed = face_mesh.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=imgRGB))
+    all_faces = processed.face_landmarks
+    
+    if all_faces:
+        landmarks_points = all_faces[0]
+        for landmark in landmarks_points[474:478]:
+            y = int(landmark.y * img.shape[0])
+            x = int(landmark.x * img.shape[1])
+            cv2.circle(img, (x, y), 3, (0, 255, 0), cv2.FILLED)
+            pyautogui.moveTo(x*2, y*2)
+        
+        cv2.imshow("Eye Control Mouse", img)
     key = cv2.waitKey(100)
     if key == 27:
         break
