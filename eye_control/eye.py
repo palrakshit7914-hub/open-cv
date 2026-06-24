@@ -25,7 +25,7 @@ face_mesh = vision.FaceLandmarker.create_from_options(options)
 cam = cv2.VideoCapture(0)
 
 smooth_x, smooth_y = 0, 0
-damping = 0.08
+damping = 0.05
 
 while True:
     _,img = cam.read()
