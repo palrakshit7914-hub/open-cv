@@ -24,6 +24,9 @@ options = vision.FaceLandmarkerOptions(
 face_mesh = vision.FaceLandmarker.create_from_options(options)
 cam = cv2.VideoCapture(0)
 
+smooth_x, smooth_y = 0, 0
+damping = 0.08
+
 while True:
     _,img = cam.read()
     img = cv2.flip(img, 1)
@@ -48,15 +51,23 @@ while True:
             
             iris_center = landmarks_points[473]
             
-            min_x, max_x = 0.43, 0.47
-            min_y, max_y = 0.43, 0.
+            min_x, max_x = 0.35, 0.55
+            min_y, max_y = 0.35, 0.55
             
             normalized_x = (iris_center.x - min_x) / (max_x - min_x)
             normalized_y = (iris_center.y - min_y) / (max_y - min_y)
 
+            screen_x = int(normalized_x * screen_w)
+            screen_y = int(normalized_y * screen_h)
+
+            smooth_x = smooth_x * (1 - damping) + screen_x * damping
+            smooth_y = smooth_y * (1 - damping) + screen_y * damping
+
+            pyautogui.moveTo(smooth_x, smooth_y)
+
             if left_eye[0].y - left_eye[1].y < 0.01:
                 pyautogui.click()
-                pyautogui.sleep(1)
+                pyautogui.sleep(2)
                 print("Mouse Clicked")
 
         cv2.imshow("Eye Control Mouse", img)
