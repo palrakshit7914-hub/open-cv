@@ -60,8 +60,10 @@ while True:
             screen_x = int(normalized_x * screen_w)
             screen_y = int(normalized_y * screen_h)
 
-            smooth_x = smooth_x * (1 - damping) + screen_x * damping
-            smooth_y = smooth_y * (1 - damping) + screen_y * damping
+            # smooth_x = smooth_x * (1 - damping) + screen_x * damping
+            # smooth_y = smooth_y * (1 - damping) + screen_y * damping
+            smooth_x = smooth_x + (screen_x - smooth_x) * damping
+            smooth_y = smooth_y + (screen_y - smooth_y) * damping
 
             pyautogui.moveTo(smooth_x, smooth_y)
 
