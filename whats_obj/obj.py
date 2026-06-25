@@ -2,6 +2,7 @@ import cv2
 import os
 from ultralytics import YOLO
 
+model = YOLO("yolov8n.pt")
 
 webcam = cv2.VideoCapture(0)
 while True:
