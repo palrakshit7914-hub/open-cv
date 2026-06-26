@@ -8,24 +8,31 @@ webcam = cv2.VideoCapture(0)
 while True:
     _,img = webcam.read()
     img = cv2.flip(img,1)#mirror the image
+    h, w, _ = img.shape
 
     results = model(img,stream=True)#optimized img for webcam
     for r in results:
-        img = r.plot()
-        for box in r.boxes.xyxy:
-            x1,y1,x2,y2 = r.boxes.xyxy[0]#making bounding box coordinates into integers
+        boxes = r.boxes
+        for box in boxes.xyxy:
+            x1,y1,x2,y2 = boxes.xyxy[0]#making bounding box coordinates into integers
             x1,y1,x2,y2 = int(x1),int(y1),int(x2),int(y2)
 
-            # conf = float(r.boxes.conf[0])
-            conf = round(float(r.boxes.conf[0]), 2)#confidence score and round to 2 decimal places
+            box_area = (x2 - x1) * (y2 - y1)
+            total_screen_area = w * h
 
-            class_id = int(r.boxes.cls[0])#class id of the object detected  
+            if box_area / total_screen_area < 0.05:
+                continue
+
+            # conf = float(boxes.conf[0])
+            conf = round(float(boxes.conf[0]), 2)#confidence score and round to 2 decimal places
+
+            class_id = int(boxes.cls[0])#class id of the object detected  
             class_name = model.names[class_id]#class name of the object detected
         
-            if conf > 0.5: 
-                cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)#draw rectangle around the object detected
-                label = f"{class_name} {conf}"#label of the object detected
-                cv2.putText(img,label,(x1,y1-10),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0,255,0),2)#put text of class name and confidence score
+           
+            cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)#draw rectangle around the object detected
+            label = f"{class_name} {conf}"#label of the object detected
+            cv2.putText(img,label,(x1,y1-10),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0,255,0),2)#put text of class name and confidence score
 
 
     cv2.imshow("Object Detection",img)
