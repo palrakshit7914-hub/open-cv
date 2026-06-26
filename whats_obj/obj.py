@@ -9,6 +9,7 @@ while True:
     _,img = webcam.read()
     img = cv2.flip(img,1)#mirror the image
     h, w, _ = img.shape
+    screen_cx, screen_cy = w // 2, h // 2
 
     results = model(img,stream=True)#optimized img for webcam
     for r in results:
