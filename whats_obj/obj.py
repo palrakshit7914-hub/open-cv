@@ -17,7 +17,12 @@ while True:
             x1,y1,x2,y2 = int(x1),int(y1),int(x2),int(y2)
 
             # conf = float(r.boxes.conf[0])
-            conf = round(float(r.boxes.conf[0]), 2)
+            conf = round(float(r.boxes.conf[0]), 2)#confidence score and round to 2 decimal places
+
+            class_id = int(r.boxes.cls[0])#class id of the object detected 
+            class_name = model.names[class_id]#class name of the object detected
+
+
 
     cv2.imshow("Object Detection",img)
     if cv2.waitKey(10) == 27:
