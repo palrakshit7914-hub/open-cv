@@ -11,7 +11,17 @@ while True:
     h, w, _ = img.shape
     screen_cx, screen_cy = w // 2, h // 2
 
-    results = model(img,stream=True)#optimized img for webcam
+    # results = model(img,stream=True)#optimized img for webcam
+    results = model(img, conf=0.65, iou=0.3, stream=True)
+    
+    obj_cx = (x1 + x2) // 2
+    obj_cy = (y1 + y2) // 2
+    distance_from_center = ((obj_cx - screen_cx) ** 2 + (obj_cy - screen_cy) ** 2) ** 0.5
+
+    best_box = None
+    best_score = -100000 
+    best_class_name = ""
+
     for r in results:
         boxes = r.boxes
         for box in boxes.xyxy:
