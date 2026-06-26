@@ -21,7 +21,10 @@ while True:
 
             class_id = int(r.boxes.cls[0])#class id of the object detected 
             class_name = model.names[class_id]#class name of the object detected
-
+        
+            if conf > 0.5: 
+                cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)#draw rectangle around the object detected
+                cv2.putText(img,f"{class_name} {conf}",(x1,y1-10),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0,255,0),2)#put text of class name and confidence score
 
 
     cv2.imshow("Object Detection",img)
