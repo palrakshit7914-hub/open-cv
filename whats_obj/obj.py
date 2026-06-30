@@ -36,7 +36,7 @@ while True:
             obj_cy = (y1 + y2) // 2
             distance_from_center = ((obj_cx - screen_cx) ** 2 + (obj_cy - screen_cy) ** 2) ** 0.5
 
-            if conf > 0.75:
+            if distance_from_center < (w * 0.35):
                 cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
                 label = f"{class_name} {conf}"
                 cv2.putText(img,label,(x1,y1-10),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0,255,0),2)
