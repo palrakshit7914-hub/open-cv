@@ -7,25 +7,39 @@ webcam = cv2.VideoCapture(0)
 
 while True:
     _,img = webcam.read()
-    img = cv2.flip(img,1)#mirror the image
+    img = cv2.flip(img,1)
+    h, w, _ = img.shape
+    screen_cx, screen_cy = w // 2, h // 2
 
-    results = model(img,stream=True)#optimized img for webcam
+    results = model(img,conf=0.55, iou=0.4,stream=True)
 
     for r in results:
         boxes = r.boxes
         for box in boxes.xyxy:
-            x1,y1,x2,y2 = boxes.xyxy[0]#making bounding box coordinates into integers
+            x1,y1,x2,y2 = boxes.xyxy[0]
             x1,y1,x2,y2 = int(x1),int(y1),int(x2),int(y2)
 
-            # conf = float(boxes.conf[0])
-            conf = round(float(boxes.conf[0]), 2)#confidence score and round to 2 decimal places
-            class_id = int(r.boxes.cls[0])#class id of the object detected  
-            class_name = model.names[class_id]#class name of the object detected
+            conf = float(boxes.conf[0])
+            # conf = round(float(boxes.conf[0]), 2)
+            class_id = int(r.boxes.cls[0])  
+            class_name = model.names[class_id]
 
-            if conf > 0.25:#if confidence score is greater than 0.5 then draw rectangle and put text
-                cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)#draw rectangle around the object detected
-                label = f"{class_name} ({int(conf*100)}%)"#label of the object detected
-                cv2.putText(img,label,(x1,y1-10),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0,255,0),2)#put text of class name and confidence score 
+            if class_name == "person":
+                continue
+
+            box_area = (x2 - x1) * (y2 - y1)
+            total_screen_area = w * h
+            if box_area / total_screen_area < 0.02: 
+                continue
+
+            obj_cx = (x1 + x2) // 2
+            obj_cy = (y1 + y2) // 2
+            distance_from_center = ((obj_cx - screen_cx) ** 2 + (obj_cy - screen_cy) ** 2) ** 0.5
+
+            if conf > 0.75:
+                cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
+                label = f"{class_name} {conf}"
+                cv2.putText(img,label,(x1,y1-10),cv2.FONT_HERSHEY_SIMPLEX,0.9,(0,255,0),2)
 
     cv2.imshow("Object Detection",img)
     if cv2.waitKey(10) == 27:
