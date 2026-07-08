@@ -31,3 +31,11 @@ while True:
     h,w,_ = img.shape
 
     rgb_frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    results = hand_landmarker.detect_for_video(rgb_frame, int(cam.get(cv2.CAP_PROP_POS_FRAMES)))
+    
+
+    cv2.imshow("Naruto Hand Sign", img)
+    if cv2.waitKey(10) == 27:
+        break
+cam.release()
+cv2.destroyAllWindows()
