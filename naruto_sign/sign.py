@@ -32,10 +32,20 @@ while True:
 
     rgb_frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = hand_landmarker.detect_for_video(rgb_frame, int(cam.get(cv2.CAP_PROP_POS_FRAMES)))
-    
+    if results.hand_landmarks:
+        for hand_landmarks in results.hand_landmarks:
+            mp.solutions.drawing_utils.draw_landmarks(img, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS)
+            landmarks = hand_landmarks.landmark
+            # Example: Print the coordinates of the index finger tip   
+            index_finger_tip = landmarks[8]
+            index_knuckle = landmarks[5]
+            print(f"Index Finger Tip Coordinates: (x: {index_finger_tip.x}, y: {index_finger_tip.y}, z: {index_finger_tip.z})")
+            print(f"Index Knuckle Coordinates: (x: {index_knuckle.x}, y: {index_knuckle.y}, z: {index_knuckle.z})")
 
+            cv2.putText(img, f"Index Tip: ({index_finger_tip.x:.2f}, {index_finger_tip.y:.2f})", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+            cv2.putText(img, f"Index Knuckle: ({index_knuckle.x:.2f}, {index_knuckle.y:.2f})", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
     cv2.imshow("Naruto Hand Sign", img)
     if cv2.waitKey(10) == 27:
         break
 cam.release()
-cv2.destroyAllWindows()
+cv2.destroyAllWindows() 
