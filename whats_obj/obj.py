@@ -11,7 +11,7 @@ while True:
     h, w, _ = img.shape
     screen_cx, screen_cy = w // 2, h // 2
 
-    results = model(img,conf=0.55, iou=0.4,stream=True)
+    results = model(img,conf=0.40, iou=0.60,stream=True)
 
     for r in results:
         boxes = r.boxes
@@ -19,13 +19,13 @@ while True:
             x1,y1,x2,y2 = boxes.xyxy[0]
             x1,y1,x2,y2 = int(x1),int(y1),int(x2),int(y2)
 
-            conf = float(boxes.conf[0])
-            # conf = round(float(boxes.conf[0]), 2)
+            # conf = float(boxes.conf[0])
+            conf = round(float(boxes.conf[0]), 2)
             class_id = int(r.boxes.cls[0])  
             class_name = model.names[class_id]
 
-            if class_name == "person":
-                continue
+            # if class_name == "person":
+            #     continue 
 
             box_area = (x2 - x1) * (y2 - y1)
             total_screen_area = w * h
@@ -46,3 +46,5 @@ while True:
         break
 webcam.release()
 cv2.destroyAllWindows()
+
+
