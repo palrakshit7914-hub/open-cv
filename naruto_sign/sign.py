@@ -45,8 +45,8 @@ while True:
 
     draw_clone = False
     if results.hand_landmarks and len(results.hand_landmarks) == 2:
-        hand1 = results.hand_landmark[0]
-        hand2 = results.hand_landmark[1]
+        hand1 = results.hand_landmarks[0]
+        hand2 = results.hand_landmarks[1]
 
         h1_index_tip = hand1[8]
         h1_index_knuckle = hand1[5]
@@ -57,7 +57,7 @@ while True:
         h2_extended = h2_index_tip.y < h2_index_knuckle.y
 
         if h1_extended and h2_extended:
-            h1_x, h1_y  = int(h1_index_tip.x * w), int(h1_index_knuckle.h)
+            h1_x, h1_y  = int(h1_index_tip.x * w), int(h1_index_knuckle.y * h)
             h2_x, h2_y = int(h2_index_tip.x * w), int(h2_index_tip.y * h)
 
             distance = np.sqrt((h1_x - h2_x)**2 + (h1_y - h2_y)**2)
@@ -72,7 +72,7 @@ while True:
 
             if draw_clone:
 
-                cv2.putText(img, "Shadow Clone Jutsu", (50,80), cv2.FONT_HERSHEY_SIMPLEX,1.2,(0,165,,255),3)
+                cv2.putText(img, "Shadow Clone Jutsu", (50,80), cv2.FONT_HERSHEY_SIMPLEX,1.2,(0,165,255),3)
             
                 clone_frame = img.copy()
 
