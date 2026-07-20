@@ -61,15 +61,34 @@ while True:
             h2_x, h2_y = int(h2_index_tip.x * w), int(h2_index_tip.y * h)
 
             distance = np.sqrt((h1_x - h2_x)**2 + (h1_y - h2_y)**2)
+
+            if distance < 80:
+                draw_clone = True
+
+        for hand_landmarks in results.hand_landmarks:
+            for lm in hand_landmarks:
+                cx,cy = int(lm.x * w), int(lm.y * h)
+                cv2.circle(img, (cx, cy), 5, (0,255,0), cv2.FILLED)
+
+            if draw_clone:
+
+                cv2.putText(img, "Shadow Clone Jutsu", (50,80), cv2.FONT_HERSHEY_SIMPLEX,1.2,(0,165,,255),3)
             
+                clone_frame = img.copy()
+
+                alpha = 0.6
+
+                small_live = cv2.resize(img,(w//2,h))
+                small_clone = cv2.resize(clone_frame,(w//2,h))
+
+                small_clone[:, :, 0] = cv2.add(small_chakra[:, :, 0], 50)
+
+                final_display = np.hstack(small_live, small_clone)
+
+            else:
+
+                final_display = img
             
-            # Screen par clean monitoring text lagayein
-            cv2.putText(img, f"Index Tip Y: {index_finger_tip.y:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-            cv2.putText(img, f"Index Knuckle Y: {index_knuckle.y:.2f}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-    
-            # NARUTO JUTSU DETECTOR LOGIC
-            if index_finger_tip.y < index_knuckle.y and middle_finger_tip.y < middle_knuckle.y:
-                cv2.putText(img, "RAM Sign", (10, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 3)
 
             
 
