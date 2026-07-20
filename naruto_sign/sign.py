@@ -70,31 +70,30 @@ while True:
                 cx,cy = int(lm.x * w), int(lm.y * h)
                 cv2.circle(img, (cx, cy), 5, (0,255,0), cv2.FILLED)
 
-            if draw_clone:
+    if draw_clone:
 
-                cv2.putText(img, "Shadow Clone Jutsu", (50,80), cv2.FONT_HERSHEY_SIMPLEX,1.2,(0,165,255),3)
+        cv2.putText(img, "Shadow Clone Jutsu", (50,80), cv2.FONT_HERSHEY_SIMPLEX,1.2,(0,165,255),3)
             
-                clone_frame = img.copy()
+        clone_frame = img.copy()
 
-                alpha = 0.6
+        alpha = 0.6
 
-                small_live = cv2.resize(img,(w//2,h))
-                small_clone = cv2.resize(clone_frame,(w//2,h))
+        small_live = cv2.resize(img,(w//2,h))
+        small_clone = cv2.resize(clone_frame,(w//2,h))
 
-                small_clone[:, :, 0] = cv2.add(small_chakra[:, :, 0], 50)
+        small_clone[:, :, 0] = cv2.add(small_clone[:, :, 0], 50)
 
-                final_display = np.hstack(small_live, small_clone)
+        final_display = np.hstack((small_live, small_clone))
 
-            else:
-
-                final_display = img
-            
-
+    else:
+        final_display = img
             
 
-    cv2.imshow("Naruto Hand Sign", img)
+            
+
+    cv2.imshow("Naruto Hand Sign", final_display)
     if cv2.waitKey(10) == 27: # Press ESC to close
-        break
+                break
 
 cam.release()
 cv2.destroyAllWindows()
