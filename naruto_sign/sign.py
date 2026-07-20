@@ -60,7 +60,7 @@ while True:
             h1_x, h1_y  = int(h1_index_tip.x * w), int(h1_index_knuckle.h)
             h2_x, h2_y = int(h2_index_tip.x * w), int(h2_index_tip.y * h)
 
-            
+            distance = np.sqrt((h1_x - h2_x)**2 + (h1_y - h2_y)**2)
             
             
             # Screen par clean monitoring text lagayein
